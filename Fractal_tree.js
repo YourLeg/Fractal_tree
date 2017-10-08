@@ -44,7 +44,7 @@ function setup() {
   tmp.parent('rAngleSlider-holder');
   rAngle = rAngleSlider.value();
 
-updateRule();
+  updateRule();
   textAlign(CENTER);
 }
 
@@ -62,9 +62,8 @@ function draw() {
 }
 
 function updateRule() {
-  console.log("pressed");
   rule = input.value()
-  rule = rule.replace(/\s/g, '');
+    rule = rule.replace(/\s/g, '');
   var branchSubstractions = 0;
   for (var i=0; i<rule.length; ++i) {
     var current = rule.charAt(i);
@@ -76,11 +75,28 @@ function updateRule() {
     rule = "F";
     branchSubstraction = 1;
   }
+  var counter = 0;
+  for (var i=0; i<rule.length; ++i) {
+    var current = rule.charAt(i);
+    switch(current) {
+    case '[':
+      ++counter;
+      break;
+    case ']':
+      --counter;
+      break;
+    }
+    if (counter<0) break;
+  }
+  if(counter!=0){
+    input.value("Дисбаланс скобок");
+    rule = "F";
+    branchSubstraction = 1;
+  }
   lengthMult = 1./branchSubstractions;
   sentence = rule;
   len = initLength;
   computed = false;
-  console.log(sentence);
 }
 
 function checkLengthSliders() {
