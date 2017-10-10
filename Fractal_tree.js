@@ -70,8 +70,8 @@ function updateRule() {
     if (current == 'F') ++branchSubstractions;
     else break;
   }
-  if (branchSubstractions<=1) {
-    input.value("Минимум два F в начале");
+  if (branchSubstractions<1) {
+    input.value("Минимум одна F в начале");
     rule = "F";
     branchSubstraction = 1;
   }
@@ -88,7 +88,7 @@ function updateRule() {
     }
     if (counter<0) break;
   }
-  if(counter!=0){
+  if (counter!=0) {
     input.value("Дисбаланс скобок");
     rule = "F";
     branchSubstraction = 1;
@@ -97,6 +97,7 @@ function updateRule() {
   sentence = rule;
   len = initLength;
   computed = false;
+  rule = rule.replace(/F/g, 'f');
 }
 
 function checkLengthSliders() {
@@ -116,19 +117,17 @@ function checkLengthSliders() {
 }
 
 function updateSentence() {
-  //text(sentence, 200,100);
-  len*=lengthMult;
+  var searchRes = sentence.search('F');
+  if (searchRes>=0) {
+    sentence = sentence.substr(0, searchRes) + rule + sentence.substr(searchRes+1, sentence.length);
+  } else {
+    len*=lengthMult;
+    sentence = sentence.replace(/f/g, 'F');
+  }
   if (len <= minLength) {
     computed = true;
     return
   }
-  var newSentence = "";
-  for (var i=0; i<sentence.length; ++i) {
-    var current = sentence.charAt(i);
-    if (current == 'F') newSentence += rule;
-    else newSentence += current;
-  }
-  sentence = newSentence;
 }
 
 function checkAngleSliders() {
@@ -153,6 +152,10 @@ function printSentence() {
     case 'F':
       line(0, 0, 0, len);
       translate(0, len);
+      break;
+    case 'f':
+      line(0, 0, 0, len*lengthMult);
+      translate(0, len*lengthMult);
       break;
     case '+':
       rotate(lAngle);
