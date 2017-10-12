@@ -4,6 +4,8 @@ var rule, lengthMult, initLength, minLength, lAngle, rAngle; //меняются 
 
 var sentence, computed, len;
 
+var actions = [];
+
 function setup() {
 
   cnv = createCanvas(400, 400);
@@ -46,6 +48,12 @@ function setup() {
 
   updateRule();
   textAlign(CENTER);
+    actions['F'] = function longBranch(){ line(0, 0, 0, len); translate(0, len);};
+  actions['f'] = function shortBranch() { line(0, 0, 0, len*lengthMult); translate(0, len*lengthMult);};
+  actions['+'] = function lRotate() { rotate(lAngle);};
+  actions['-'] = function rRotate() { rotate(-rAngle);};
+  actions['['] = function saveProps() { push();};
+  actions[']'] = function loadProps() { pop();};
 }
 
 function draw() {
@@ -78,7 +86,7 @@ function updateRule() {
   var counter = 0;
   for (var i=0; i<rule.length; ++i) {
     var current = rule.charAt(i);
-    switch(current) {
+    switch(current) {//()?A:B
     case '[':
       ++counter;
       break;
@@ -148,28 +156,8 @@ function printSentence() {
   scale(1, -1);
   for (var i=0; i<sentence.length; ++i) {
     var current = sentence.charAt(i);
-    switch(current) {
-    case 'F':
-      line(0, 0, 0, len);
-      translate(0, len);
-      break;
-    case 'f':
-      line(0, 0, 0, len*lengthMult);
-      translate(0, len*lengthMult);
-      break;
-    case '+':
-      rotate(lAngle);
-      break;
-    case '-':
-      rotate(-rAngle);
-      break;
-    case '[':
-      push();
-      break;
-    case ']':
-      pop();
-      break;
-    }
+    actions[current]();
+    //*********************
   }
   resetMatrix();
 }
