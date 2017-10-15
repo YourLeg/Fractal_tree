@@ -2,30 +2,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Рекурсивное дерево</title>
-  <!--link rel="stylesheet" href="style.css"-->
-
-
-
-  <!-- This line removes any default padding and style.
-       You might only need one of these values set. -->
-  <style> body {padding: 0; margin: 0;} </style>
 </head>
 
 <body>
-
-<div id="sketch-holder">
-<div id="input-holder">
-<div id="initLengthSlider-holder">
-<div id="minLengthSlider-holder">
-<div id="lAngleSlider-holder">
-<div id="rAngleSlider-holder">
-
-F - рисование ветки <br>
-+ - поворот против часовой стрелки <br>
-- - поворот по часовой стрелке <br>
-[ - сохранить начальную позицию в стек <br>
-] - взять из стека сохраненную позицию <br>
-<!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
+  <p>
+    <h3>Значение символов в грамматике</h3>
+    F - рисование ветки <br>
+    + - поворот против часовой стрелки <br>
+    - - поворот по часовой стрелке <br>
+    [ - сохранить начальную позицию в стек <br>
+    ] - взять из стека сохраненную позицию <br>
+    <h3>Пимеры</h3>
+    Кривая Коха: F->F+F-F-F+F <br>
+    <h3>Параметры системы</h3>
+    Правило: F -> <input id="input" value="FF + [+F-F-F] - [-F+F+F]"></input>
+    <button id="submit">Обновить</button>
+    <div id="lengthParContainer">
+      <input type="range" min="1" max="100" value="50" class="slider" id="len">Длина отрезка<br></input>
+    </div>
+    <div id="angleParContainer">
+      <input type="range" min="0" max="90" value="5" class="slider" id="lAngle">Поворот для +<br></input>
+      <input type="range" min="0" max="90" value="5" class="slider" id="rAngle">Поворот для -</input>
+    </div>
+    <div id="sketch-holder"></div>
+    <button id="nextStep">Следующий шаг</button>
+  </p>
+  <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
   <script language="javascript" type="text/javascript" src="Fractal_tree.js"></script>
