@@ -14,20 +14,26 @@
     [ - сохранить начальную позицию в стек <br>
     ] - взять из стека сохраненную позицию <br>
     <h3>Пимеры</h3>
-    Кривая Коха: F->F+F-F-F+F <br>
+    <a href="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7">Дерево Пифагора</a><br>
+    <a href="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5">Кривая Коха</a><br>
+    <a href="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4">Треугольник Серпинского</a><br>
+    <a href="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7">Стреловидная кривая Серпинсеого</a><br>
+    <a href="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6">Фрактальное растение</a><br>
     <h3>Параметры системы</h3>
-    Начальное слово: <input id="sentence" value="F"></input><br>
-    Правила: <textarea id="rules" value="F -> FF + [+F-F-F] - [-F+F+F]">F -> FF + [+F-F-F] - [-F+F+F]</textarea><br>
+    Начальное слово: <input id="sentence"></input><br>
+    Правила: <textarea id="rules"></textarea><br>
     <button id="submit">Обновить</button>
     <div id="lengthParContainer">
-      <input type="range" min="1" max="100" value="50" class="slider" id="len">Длина отрезка<br></input>
+      <input type="range" min="1" max="400" class="slider" id="len">Длина отрезка<br></input>
     </div>
     <div id="angleParContainer">
-      <input type="range" min="0" max="90" value="5" class="slider" id="lAngle">Поворот для +<br></input>
-      <input type="range" min="0" max="90" value="5" class="slider" id="rAngle">Поворот для -</input>
+      <input type="range" min="0" max="90" class="slider" id="lAngle">Поворот для +<br></input>
+      <input type="range" min="0" max="90" class="slider" id="rAngle">Поворот для -</input>
     </div>
     <div id="sketch-holder"></div>
-    <button id="nextStep">Следующий шаг</button>
+    <button id="nextStep">Следующий шаг</button><br>
+    <button id="getURLButton">Получить ссылку на это дерево</button><br>
+    <textarea id="url"></textarea>
   </p>
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>

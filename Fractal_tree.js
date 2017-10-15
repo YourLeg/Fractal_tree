@@ -1,6 +1,6 @@
 var cnv, sentenceInput, RulesInput, submit, lenInput, lAngleInput, rAngleInput, udpate; //GUI
 
-var sentence, rules = [], len, lAngle, rAngle; //меняются через GUI
+var sentence, rules = [], len, lAngle, rAngle, reps = 0; //меняются через GUI и url
 
 var actions = [];
 
@@ -26,15 +26,66 @@ function setup() {
   update = select("#nextStep");
   update.mousePressed(updateSentence);
 
+  select("#getURLButton").mousePressed(generateURL);
+
   actions['A'] = function Branch(){ line(0, 0, 0, len); translate(0, len);};
   actions['a'] = function Nothing(){};
   actions['+'] = function lRotate() { rotate(lAngle);};
   actions['-'] = function rRotate() { rotate(-rAngle);};
   actions['['] = function saveProps() { push();};
   actions[']'] = function loadProps() { pop();};
+  initValues();
+}
+
+function getUrlArgs() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+    vars[key] = value;
+  });
+  return vars;
+}
+
+
+function initValues() {
+  var args = getUrlArgs();
+
+  if(args["len"]) lenInput.value(args["len"]);
+  else lenInput.value(40);
+
+  if(args["lAngle"]) lAngleInput.value(args["lAngle"]);
+  else lAngleInput.value(5);
+
+  if(args["rAngle"]) rAngleInput.value(args["rAngle"]);
+  else rAngleInput.value(5);
+
   updatePar();
+
+  if(args["sentence"]) sentenceInput.value(args["sentence"]);
+  else sentenceInput.value("A");
+
+  if(args["rules"]) RulesInput.value(args["rules"].replace(/%3E/g, '>').replace(/%86/g, "\n"));
+  else RulesInput.value("A->AA+[+A-A-A]-[-A+A+A]");
+
   updateRule();
+
+  var tmp
+  if(args["reps"]) tmp = args["reps"];
+  else tmp=0;
+
+  for(var i=0; i<tmp; ++i) updateSentence();
+
   printSentence();
+}
+
+function generateURL() {
+  var url = window.location.href + "?" +
+  "sentence=" + sentenceInput.value() + "&" +
+  "rules=" + RulesInput.value().replace(/\r\n|\r|\n/g,"%86").replace(/\s/g,'') + "&" +
+  "len=" + len + "&" +
+  "lAngle=" + lAngle + "&" +
+  "rAngle=" + rAngle + "&" +
+  "reps=" + reps;
+  select("#url").value(url);
 }
 
 function updatePar() {
@@ -56,6 +107,7 @@ function draw() {
 }
 
 function updateRule() {
+  reps=0;
   rules = [];
   var lines = RulesInput.value().split(/\r\n|\r|\n/g);
   for(var i=0; i<lines.length; ++i){
@@ -116,6 +168,7 @@ function updateSentence() {
   }
   sentence = newSentence;
   printSentence();
+  ++reps;
 }
 
 function printSentence() {
