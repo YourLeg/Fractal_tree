@@ -1,8 +1,6 @@
-var cnv, input, submit, lenInput, lAngleInput, rAngleInput, udpate; //GUI
+var cnv, sentenceInput, RulesInput, submit, lenInput, lAngleInput, rAngleInput, udpate; //GUI
 
-var rule, len, lAngle, rAngle; //меняются через GUI
-
-var sentence;
+var sentence, rules = [], len, lAngle, rAngle; //меняются через GUI
 
 var actions = [];
 
@@ -12,7 +10,9 @@ function setup() {
   cnv.parent('sketch-holder');
   background(200);
 
-  input = select("#input");
+  sentenceInput = select("#sentence");
+
+  RulesInput = select("#rules");
 
   submit = select("#submit");
   submit.mousePressed(updateRule);
@@ -26,7 +26,8 @@ function setup() {
   update = select("#nextStep");
   update.mousePressed(updateSentence);
 
-  actions['F'] = function longBranch(){ line(0, 0, 0, len); translate(0, len);};
+  actions['A'] = function Branch(){ line(0, 0, 0, len); translate(0, len);};
+  actions['a'] = function Nothing(){};
   actions['+'] = function lRotate() { rotate(lAngle);};
   actions['-'] = function rRotate() { rotate(-rAngle);};
   actions['['] = function saveProps() { push();};
@@ -55,25 +56,54 @@ function draw() {
 }
 
 function updateRule() {
-  rule = input.value().replace(/\s/g, '');
-  var counter = 0;
-  for (var i=0; i<rule.length; ++i) {
-    var current = rule.charAt(i);
-    switch(current) {
-      case '[':
-      ++counter;
-      break;
-      case ']':
-      --counter;
-      break;
+  rules = [];
+  var lines = RulesInput.value().split(/\r\n|\r|\n/g);
+  for(var i=0; i<lines.length; ++i){
+    var rule = lines[i].replace(/\s/g,'');
+    if(rule != ""){
+    var counter = 0;
+    for (var j=0; j<rule.length; ++j) {
+      var current = rule.charAt(j);
+      switch(current) {
+        case '[':
+        ++counter;
+        break;
+        case ']':
+        --counter;
+        break;
+      }
+      if (counter<0) break;
     }
-    if (counter<0) break;
+    if (counter!=0) {
+      lines[i] = "Дисбаланс скобок в " + rule;
+      rule = "A->A";
+      continue;
+    }
+    switch(rule.search("->")){
+      case -1:
+      lines[i] = "Некорректное правило " + rule;
+      break;
+      case 0:
+      lines[i] = "Слева стоит пустота в правиле " + rule;
+      break;
+      case 1:
+      rules[rule.charAt(0)] = rule.substr(3, rule.length);
+      break;
+      default:
+      lines[i] = "слишком большая левая часть в правиле " + rule;
+      break;
+      }
+    }
   }
-  if (counter!=0) {
-    input.value("Дисбаланс скобок");
-    rule = "F";
+  var message = "";
+  for(var i=0; i<lines.length; ++i){
+    message +=lines[i];
+    if(i!=lines.length-1){
+      message += "\n";
+    }
   }
-  sentence = rule;
+  RulesInput.value(message);
+  sentence = sentenceInput.value();
   printSentence();
 }
 
@@ -81,7 +111,7 @@ function updateSentence() {
   var newSentence = "";
   for(var i=0; i<sentence.length; ++i){
     var current = sentence.charAt(i);
-    if(current == "F") newSentence +=rule;
+    if(rules[current] != undefined) newSentence +=rules[current];
     else newSentence += current;
   }
   sentence = newSentence;
@@ -89,14 +119,15 @@ function updateSentence() {
 }
 
 function printSentence() {
+  var simpliSentence = sentence.replace(/[A-Z]/g,'A').replace(/[a-z]/g,'a');
   background(200);
   angleMode(DEGREES);
   resetMatrix();
   translate(width*0.5, height);
   scale(1, -1);
-  for (var i=0; i<sentence.length; ++i) {
-    var current = sentence.charAt(i);
-    actions[current]();
+  for (var i=0; i<simpliSentence.length; ++i) {
+    var current = simpliSentence.charAt(i);
+    if(actions[current] != undefined) actions[current]();
   }
   resetMatrix();
 }

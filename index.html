@@ -7,7 +7,8 @@
 <body>
   <p>
     <h3>Значение символов в грамматике</h3>
-    F - рисование ветки <br>
+    Заглавная латинская буква - рисование ветки <br>
+    Строная латинская буква - служебный символ для построения грамматик <br>
     + - поворот против часовой стрелки <br>
     - - поворот по часовой стрелке <br>
     [ - сохранить начальную позицию в стек <br>
@@ -15,7 +16,8 @@
     <h3>Пимеры</h3>
     Кривая Коха: F->F+F-F-F+F <br>
     <h3>Параметры системы</h3>
-    Правило: F -> <input id="input" value="FF + [+F-F-F] - [-F+F+F]"></input>
+    Начальное слово: <input id="sentence" value="F"></input><br>
+    Правила: <textarea id="rules" value="F -> FF + [+F-F-F] - [-F+F+F]">F -> FF + [+F-F-F] - [-F+F+F]</textarea><br>
     <button id="submit">Обновить</button>
     <div id="lengthParContainer">
       <input type="range" min="1" max="100" value="50" class="slider" id="len">Длина отрезка<br></input>
