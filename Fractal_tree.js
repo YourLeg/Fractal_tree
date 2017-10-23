@@ -173,7 +173,8 @@ function updateSentence() {
 
 function printSentence() {
   var simpliSentence = sentence.replace(/[A-Z]/g,'A').replace(/[a-z]/g,'a');
-  background(200);
+  background(240,255,240);
+  stroke(0,255,127);
   angleMode(DEGREES);
   resetMatrix();
   translate(width*0.5, height);

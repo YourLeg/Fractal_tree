@@ -2,24 +2,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Фрактальное дерево</title>
+  <link rel="stylesheet" type="text/css" href="style/style.css">
 </head>
 
 <body>
-  <p>
-    <h3>Значение символов в грамматике</h3>
-    Заглавная латинская буква - рисование ветки <br>
-    Строная латинская буква - служебный символ для построения грамматик <br>
-    + - поворот против часовой стрелки <br>
-    - - поворот по часовой стрелке <br>
-    [ - сохранить начальную позицию в стек <br>
-    ] - взять из стека сохраненную позицию <br>
-    <h3>Пимеры</h3>
-    <a href="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7">Дерево Пифагора</a><br>
-    <a href="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5">Кривая Коха</a><br>
-    <a href="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4">Треугольник Серпинского</a><br>
-    <a href="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7">Стреловидная кривая Серпинсеого</a><br>
-    <a href="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6">Фрактальное растение</a><br>
-    <h3>Параметры системы</h3>
+  <div class="examples"><p>
+    
+    <h3>Примеры</h3>
+	<button class="refs">
+    <a href="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7">Дерево Пифагора</a>
+	</button><br>
+	<button class="refs">
+    <a href="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5">Кривая Коха</a>
+	</button><br>
+	<button class="refs">
+    <a href="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4">Треугольник Серпинского</a>
+	</button><br>
+	<button class="refs">
+    <a href="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7">Стреловидная кривая Серпинсеого</a>
+	</button class="refs"><br>
+	<button class="refs">
+    <a href="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6">Фрактальное растение</a>
+	</button><br>
+    </div>
+	<div class="visual">
+	<h3>Параметры системы</h3>
     Начальное слово: <input id="sentence"></input><br>
     Правила: <textarea id="rules"></textarea><br>
     <button id="submit">Обновить</button>
@@ -35,6 +42,16 @@
     <button id="getURLButton">Получить ссылку на это дерево</button><br>
     <textarea id="url"></textarea>
   </p>
+  </div>
+  <div class="info">
+  <h3>Значение символов в грамматике</h3>
+    Заглавная латинская буква - рисование ветки <br>
+    Строная латинская буква - служебный символ для построения грамматик <br>
+    + - поворот против часовой стрелки <br>
+    - - поворот по часовой стрелке <br>
+    [ - сохранить начальную позицию в стек <br>
+    ] - взять из стека сохраненную позицию <br>
+	</div>
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
