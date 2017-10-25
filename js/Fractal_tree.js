@@ -39,9 +39,13 @@ function setup() {
 
 function getUrlArgs() {
   var vars = {};
+  var dataUrl = $('#current_tree').value;
+  console.log(dataUrl);
   var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
     vars[key] = value;
+    console.log(vars);
   });
+  console.log(parts);
   return vars;
 }
 
