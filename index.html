@@ -2,60 +2,94 @@
 <head>
   <meta charset="UTF-8">
   <title>Фрактальное дерево</title>
-  <link rel="stylesheet" type="text/css" href="style/style.css">
+  <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link class="link_stylesheet" rel="stylesheet" type="text/css" href="css/ping.css">
+  <link rel="stylesheet" type="text/css" href="css/typography.css">
+  <link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css" media="screen" />
 </head>
 
 <body>
-  <div class="examples"><p>
-    
-    <h3>Примеры</h3>
-	<button class="refs">
-    <a href="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7">Дерево Пифагора</a>
-	</button><br>
-	<button class="refs">
-    <a href="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5">Кривая Коха</a>
-	</button><br>
-	<button class="refs">
-    <a href="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4">Треугольник Серпинского</a>
-	</button><br>
-	<button class="refs">
-    <a href="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7">Стреловидная кривая Серпинсеого</a>
-	</button class="refs"><br>
-	<button class="refs">
-    <a href="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6">Фрактальное растение</a>
-	</button><br>
+<a href="#change-your-style" title="сменить тему" class="change-theme change-theme_ping"></a>
+  <div class="container">
+    <div class="container_examples examples">
+      <h3>Примеры</h3>
+      <button class="examples__tags" href="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7" data-url="?sentence=A&rules=B->BB%86A->B[+A]-A&len=2&lAngle=45&rAngle=45&reps=7">Дерево Пифагора</button>
+      <button class="examples__tags" href="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5" data-url="?sentence=A&rules=A->A+A-A-A+A&len=2&lAngle=90&rAngle=90&reps=5">Кривая Коха</button>
+      <button class="examples__tags" href="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4" data-url="?sentence=A--B--B&rules=A->A--B++A++B--A%86B->BB&len=14&lAngle=60&rAngle=60&reps=4">Треугольник Серпинского</button>
+      <button class="examples__tags" href="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7" data-url="?sentence=A&rules=A->+B-A-B+%86B->-A+B+A-&len=2&lAngle=60&rAngle=60&reps=7">Стреловидная кривая Серпинского</button>
+      <button class="examples__tags" href="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6" data-url="?sentence=a&rules=a->A-[[a]+a]+A[+Aa]-a%86A->AA&len=2&lAngle=25&rAngle=25&reps=6">Фрактальное растение</button>
+      <!-- <label for="current_tree">введите сохраненное дерево</label> -->
+      <!-- <input type="text" id="current_tree"></input> -->
+      <div class="info info__dark">
+        <h3 class="info__title">Значение символов в грамматике</h3>
+        <ul id="list-value" class="none">
+          <li>Заглавная латинская буква - рисование ветки</li>
+          <li>Строчная латинская буква - служебный символ для построения грамматик</li>
+          <li>+ - поворот против часовой стрелки</li>
+          <li>- - поворот по часовой стрелке</li>
+          <li>[ - сохранить начальную позицию в стек</li>
+          <li>] - взять из стека сохраненную позицию</li>
+        </ul>
+        <a href="#list-value" class="list-value">Открыть список возможных значений</a>
+      </div>
     </div>
-	<div class="visual">
-	<h3>Параметры системы</h3>
-    Начальное слово: <input id="sentence"></input><br>
-    Правила: <textarea id="rules"></textarea><br>
-    <button id="submit">Обновить</button>
-    <div id="lengthParContainer">
-      <input type="range" min="1" max="400" class="slider" id="len">Длина отрезка<br></input>
+  	<div class="container_visual">
+    <a href="#change-your-style" title="сменить тему" class="change-theme change-theme_dark"></a>
+  	  <h3>Параметры системы</h3>
+      <div class="container_rules">
+        <label for="sentence">Начальное слово:</label><input id="sentence" placeholder="a"></input>
+        <label for="rules">Правила:</label> <textarea id="rules" placeholder="a->A-[[a]+a]+A[+Aa]-aA->AA"></textarea>
+        <button id="submit">Обновить</button>
+      </div>
+      <div id="lengthParContainer">
+        <label for="len">Длина отрезка:</label>
+        <input type="range" min="1" max="400" class="slider" id="len"></input>
+      </div>
+      <div id="angleParContainer">
+        <label for="lAngle">Поворот для +</label>
+        <input type="range" min="0" max="90" class="slider" id="lAngle"></input>
+        <label for="rAngle">Поворот для -</label>
+        <input type="range" min="0" max="90" class="slider" id="rAngle"></input>
+      </div>
+      <div id="sketch-holder"></div>
+      <button id="nextStep">Следующий шаг</button>
+      <button id="undoStep">Отменить шаг</button>
+      <button id="getURLButton">Получить ссылку на это дерево</button>
+      <textarea id="url" placeholder="в этом окне будет ссылка на граф"></textarea>
     </div>
-    <div id="angleParContainer">
-      <input type="range" min="0" max="90" class="slider" id="lAngle">Поворот для +<br></input>
-      <input type="range" min="0" max="90" class="slider" id="rAngle">Поворот для -</input>
+    <div class="info">
+      <h3 class="info__title">Значение символов в грамматике</h3>
+      <ul>
+        <li>Заглавная латинская буква - рисование ветки</li>
+        <li>Строчная латинская буква - служебный символ для построения грамматик</li>
+        <li>+ - поворот против часовой стрелки</li>
+        <li>- - поворот по часовой стрелке</li>
+        <li>[ - сохранить начальную позицию в стек</li>
+        <li>] - взять из стека сохраненную позицию</li>
+      </ul>
     </div>
-    <div id="sketch-holder"></div>
-    <button id="nextStep">Следующий шаг</button><br>
-    <button id="getURLButton">Получить ссылку на это дерево</button><br>
-    <textarea id="url"></textarea>
-  </p>
   </div>
-  <div class="info">
-  <h3>Значение символов в грамматике</h3>
-    Заглавная латинская буква - рисование ветки <br>
-    Строная латинская буква - служебный символ для построения грамматик <br>
-    + - поворот против часовой стрелки <br>
-    - - поворот по часовой стрелке <br>
-    [ - сохранить начальную позицию в стек <br>
-    ] - взять из стека сохраненную позицию <br>
-	</div>
+  <div id="change-your-style">
+    <span>выберите тему для вашей страницы<span>
+      <div class="container_change-theme">
+        <div class="theme__ping">
+          <input type="radio" value="css/ping.css" name="theme" checked  class="themes" id="theme__ping"> <label for="theme__ping">розовая</label></input>
+          <label for="theme__ping"><div class="theme-preview theme__ping_preview"></div></label>
+        </div>
+        <div class="theme__dark">
+          <input type="radio" value="css/dark.css" name="theme" class="themes" id="theme__dark"> <label for="theme__dark">темная</label> </input>
+          <label for="theme__dark"><div class="theme-preview theme__dark_preview"></div></label>
+        </div>
+      </div>
+  </div>
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/p5.js"></script>
   <script language="javascript" type="text/javascript" src="libraries/p5.dom.js"></script>
-  <script language="javascript" type="text/javascript" src="Fractal_tree.js"></script>
+  <script language="javascript" type="text/javascript" src="js/Fractal_tree.js"></script>
+  <script type="text/javascript" src="js/jquery.fancybox.pack.js"></script>
+  <script language="javascript" type="text/javascript" src="js/script.js"></script>
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 </body>
 </html>

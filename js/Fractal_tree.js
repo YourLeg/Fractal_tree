@@ -4,7 +4,7 @@ var sentence, rules = [], len, lAngle, rAngle, reps = 0; //меняются че
 
 var actions = [];
 
-function setup() {
+function setup() { //запускается один раз при зашрузке страницы
 
   cnv = createCanvas(400, 400);
   cnv.parent('sketch-holder');
@@ -18,15 +18,26 @@ function setup() {
   submit.mousePressed(updateRule);
 
   lenInput = select("#len");
+  //lenInput.changed(function lenChanged(){len=lenInput.value(); printSentence();});
 
   lAngleInput = select("#lAngle");
+  //lAngleInput.сhanged(function lAngleChanged(){lAngle=lAngleInput.value(); printSentence();});
 
   rAngleInput = select("#rAngle");
+  //rAngleInput.changed(function rAngleChanged(){rAngle=rAngleInput.value(); printSentence();});
 
   update = select("#nextStep");
   update.mousePressed(updateSentence);
 
-  select("#getURLButton").mousePressed(generateURL);
+  var undo = select("#undoStep");
+  undo.mousePressed(function undoStep(){--reps; initValues(generateURL());})
+
+  select("#getURLButton").mousePressed(function outputURL(){ select("#url").value(generateURL)}); //привязка события по щелчку мыши
+
+  var examples = selectAll(".examples__tags");
+  for(var i=0; i<examples.length; ++i){
+    examples[i].mousePressed(function examplePressed(){initValues(this.elt.dataset.url)});
+  }
 
   actions['A'] = function Branch(){ line(0, 0, 0, len); translate(0, len);};
   actions['a'] = function Nothing(){};
@@ -34,45 +45,69 @@ function setup() {
   actions['-'] = function rRotate() { rotate(-rAngle);};
   actions['['] = function saveProps() { push();};
   actions[']'] = function loadProps() { pop();};
-  initValues();
+  initValues(window.location.href);
 }
 
-function getUrlArgs() {
+function getUrlArgs(url) {
   var vars = {};
-  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+  var dataUrl = $('#current_tree').value;
+  //  console.log(dataUrl);
+  var parts = url.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
     vars[key] = value;
+    //console.log(vars);
   });
+  //console.log(parts);
   return vars;
 }
 
 
-function initValues() {
-  var args = getUrlArgs();
+function initValues(url) {
+  var args = getUrlArgs(url);
 
-  if(args["len"]) lenInput.value(args["len"]);
-  else lenInput.value(40);
+  if(args["len"]) {
+    lenInput.value(args["len"]);
+  } else {
+    lenInput.value(40);
+  }
 
-  if(args["lAngle"]) lAngleInput.value(args["lAngle"]);
-  else lAngleInput.value(5);
+  if(args["lAngle"]) {
+    lAngleInput.value(args["lAngle"]);
+  } else {
+    lAngleInput.value(5);
+  }
 
-  if(args["rAngle"]) rAngleInput.value(args["rAngle"]);
-  else rAngleInput.value(5);
+  if(args["rAngle"]) {
+    rAngleInput.value(args["rAngle"]);
+  } else {
+    rAngleInput.value(5);
+  }
 
   updatePar();
 
-  if(args["sentence"]) sentenceInput.value(args["sentence"]);
-  else sentenceInput.value("A");
+  if(args["sentence"]) {
+    sentenceInput.value(args["sentence"]);
+  } else {
+    sentenceInput.value("A");
+  }
 
-  if(args["rules"]) RulesInput.value(args["rules"].replace(/%3E/g, '>').replace(/%86/g, "\n"));
-  else RulesInput.value("A->AA+[+A-A-A]-[-A+A+A]");
+  if(args["rules"]) {
+    RulesInput.value(args["rules"].replace(/%3E/g, '>').replace(/%86/g, "\n"));
+  } else {
+    RulesInput.value("A->AA+[+A-A-A]-[-A+A+A]");
+  }
 
   updateRule();
 
   var tmp
-  if(args["reps"]) tmp = args["reps"];
-  else tmp=0;
+  if(args["reps"]) {
+    tmp = args["reps"];
+  } else {
+    tmp=0;
+  }
 
-  for(var i=0; i<tmp; ++i) updateSentence();
+  for(var i=0; i<tmp; ++i) {
+    updateSentence();
+  }
 
   printSentence();
 }
@@ -85,7 +120,8 @@ function generateURL() {
   "lAngle=" + lAngle + "&" +
   "rAngle=" + rAngle + "&" +
   "reps=" + reps;
-  select("#url").value(url);
+  return url;
+  //select("#url").value(url);
 }
 
 function updatePar() {
@@ -103,7 +139,9 @@ function updatePar() {
 }
 
 function draw() {
-  if(updatePar()) printSentence();
+  if(updatePar()){
+    printSentence();
+  }
 }
 
 function updateRule() {
@@ -124,7 +162,9 @@ function updateRule() {
         --counter;
         break;
       }
-      if (counter<0) break;
+      if (counter<0) {
+        break;
+      }
     }
     if (counter!=0) {
       lines[i] = "Дисбаланс скобок в " + rule;
@@ -163,8 +203,11 @@ function updateSentence() {
   var newSentence = "";
   for(var i=0; i<sentence.length; ++i){
     var current = sentence.charAt(i);
-    if(rules[current] != undefined) newSentence +=rules[current];
-    else newSentence += current;
+    if(rules[current] != undefined) {
+      newSentence +=rules[current];
+    } else {
+      newSentence += current;
+    }
   }
   sentence = newSentence;
   printSentence();
@@ -172,6 +215,7 @@ function updateSentence() {
 }
 
 function printSentence() {
+
   var simpliSentence = sentence.replace(/[A-Z]/g,'A').replace(/[a-z]/g,'a');
   background(240, 255, 240);
   stroke(0,255,127);
@@ -181,7 +225,9 @@ function printSentence() {
   scale(1, -1);
   for (var i=0; i<simpliSentence.length; ++i) {
     var current = simpliSentence.charAt(i);
-    if(actions[current] != undefined) actions[current]();
+    if(actions[current] != undefined){
+      actions[current]();
+    }
   }
   resetMatrix();
 }
