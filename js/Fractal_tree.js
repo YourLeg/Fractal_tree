@@ -29,7 +29,10 @@ function setup() { //запускается один раз при зашруз�
   update = select("#nextStep");
   update.mousePressed(updateSentence);
 
-  select("#getURLButton").mousePressed(generateURL); //привязка события по щелчку мыши
+  var undo = select("#undoStep");
+  undo.mousePressed(function undoStep(){--reps; initValues(generateURL());})
+
+  select("#getURLButton").mousePressed(function outputURL(){ select("#url").value(generateURL)}); //привязка события по щелчку мыши
 
   var examples = selectAll(".examples__tags");
   for(var i=0; i<examples.length; ++i){
@@ -117,7 +120,8 @@ function generateURL() {
   "lAngle=" + lAngle + "&" +
   "rAngle=" + rAngle + "&" +
   "reps=" + reps;
-  select("#url").value(url);
+  return url;
+  //select("#url").value(url);
 }
 
 function updatePar() {
