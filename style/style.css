@@ -1,0 +1,80 @@
+body {
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+background: url("pinkbg.bmp");
+opacity: 1;
+font-size: 30;
+}
+
+.examples {
+	margin-left: 1%;
+	margin-right: 5%;
+	width: 30%;
+	text-align: center;
+}
+
+.refs{
+	font-size: 30;
+	margin-bottom: 15;
+}
+.visual {
+	width: 400;
+}
+
+.info {
+	margin-left: 5%; 
+	width: 30%;
+}
+
+input{
+	font-size: 15;
+}
+
+textarea{
+	font-size: 15;
+}
+
+button{
+	font-size: 20;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 400px;
+    height: 25px;
+    background: white;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: SpringGreen;
+    cursor: pointer;
+}
+
+
+a:visited {
+color: black;}
+
+a:link { 
+color: black;
+}
+
+a:activ{
+	color: black;
+}
+
+#sentence{
+	width: 150;
+}
