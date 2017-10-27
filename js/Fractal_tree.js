@@ -32,7 +32,7 @@ function setup() { //запускается один раз при зашруз�
   var undo = select("#undoStep");
   undo.mousePressed(function undoStep(){--reps; initValues(generateURL());})
 
-  select("#getURLButton").mousePressed(function outputURL(){ select("#url").value(generateURL)}); //привязка события по щелчку мыши
+  select("#getURLButton").mousePressed(function outputURL(){ select("#url").value(generateURL())}); //привязка события по щелчку мыши
 
   var examples = selectAll(".examples__tags");
   for(var i=0; i<examples.length; ++i){
@@ -113,7 +113,7 @@ function initValues(url) {
 }
 
 function generateURL() {
-  var url = window.location.href + "?" +
+  var url = window.location.href.split("?")[0] + "?" +
   "sentence=" + sentenceInput.value() + "&" +
   "rules=" + RulesInput.value().replace(/\r\n|\r|\n/g,"%86").replace(/\s/g,'') + "&" +
   "len=" + len + "&" +
@@ -142,6 +142,7 @@ function draw() {
   if(updatePar()){
     printSentence();
   }
+  //console.log(window.location.href);
 }
 
 function updateRule() {
