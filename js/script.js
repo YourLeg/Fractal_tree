@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  $('.change-theme').fancybox();
   $('.change-theme').on('click', function(event){
     event.preventDefault();
     $('.change-theme').fancybox();
