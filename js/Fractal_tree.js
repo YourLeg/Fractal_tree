@@ -39,12 +39,12 @@ function setup() { //запускается один раз при зашруз�
     examples[i].mousePressed(function examplePressed(){initValues(this.elt.dataset.url)});
   }
 
-  actions['A'] = function Branch(){ line(0, 0, 0, len); translate(0, len);};
-  actions['a'] = function Nothing(){};
-  actions['+'] = function lRotate() { rotate(lAngle);};
-  actions['-'] = function rRotate() { rotate(-rAngle);};
-  actions['['] = function saveProps() { push();};
-  actions[']'] = function loadProps() { pop();};
+  actions['A'] = function Branch(hits){ line(0, 0, 0, hits*len); translate(0, hits*len);};
+  actions['a'] = function Nothing(hits){};
+  actions['+'] = function lRotate(hits) { rotate(hits*lAngle);};
+  actions['-'] = function rRotate(hits) { rotate(-hits*rAngle);};
+  actions['['] = function saveProps(hits) { for(var i=0; i<hits; ++i){push();}};
+  actions[']'] = function loadProps(hits) { for(var i=0; i<hits; ++i){pop();}};
   initValues(window.location.href);
 }
 
@@ -129,10 +129,16 @@ function updatePar() {
   var newLen = lenInput.value();
   var newLAngle = lAngleInput.value();
   var newRAngle = rAngleInput.value();
-  if(len != newLen || lAngle != newLAngle || rAngle != newRAngle){
+  if(len != newLen){
     updated = true;
     len = newLen;
+  }
+  if(lAngle != newLAngle){
+    updated = true;
     lAngle = newLAngle;
+  }
+  if(rAngle != newRAngle){
+    updated = true;
     rAngle = newRAngle;
   }
   return updated;
@@ -142,7 +148,6 @@ function draw() {
   if(updatePar()){
     printSentence();
   }
-  //console.log(window.location.href);
 }
 
 function updateRule() {
@@ -216,19 +221,31 @@ function updateSentence() {
 }
 
 function printSentence() {
-
-  var simpliSentence = sentence.replace(/[A-Z]/g,'A').replace(/[a-z]/g,'a');
+  var withoutBig = sentence.replace(/[A-Z]/g,'A');
+  var withoutSmall = withoutBig.replace(/[a-z]/g,'a');
+  var simpliSentence = withoutSmall;
+  //console.log(simpliSentence);
   background(240, 255, 240);
   stroke(0,255,127);
   angleMode(DEGREES);
   resetMatrix();
   translate(width*0.5, height);
   scale(1, -1);
+  var prevChar, hits;
   for (var i=0; i<simpliSentence.length; ++i) {
     var current = simpliSentence.charAt(i);
-    if(actions[current] != undefined){
-      actions[current]();
+    if(prevChar == current){
+      ++hits;
+    }else{
+      if(actions[prevChar] != undefined){
+        actions[prevChar](hits);
+      }
+      prevChar=current;
+      hits = 1;
     }
+  }
+  if(actions[prevChar] != undefined){
+    actions[prevChar](hits);
   }
   resetMatrix();
 }
