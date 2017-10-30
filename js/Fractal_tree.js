@@ -4,6 +4,8 @@ var sentence, rules = [], len, lAngle, rAngle, reps = 0; //меняются че
 
 var actions = [];
 
+var url = "https://en.wikipedia.org/w/api.php?action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=json"
+
 function setup() { //запускается один раз при зашрузке страницы
 
   cnv = createCanvas(400, 400);
@@ -46,6 +48,9 @@ function setup() { //запускается один раз при зашруз�
   actions['['] = function saveProps(hits) { for(var i=0; i<hits; ++i){push();}};
   actions[']'] = function loadProps(hits) { for(var i=0; i<hits; ++i){pop();}};
   initValues(window.location.href);
+  
+  var jsn = loadJSON(url, undefined, "json", function callback(jsn){console.log(jsn);}, function errorCallback(response){console.log(response)});
+	console.log(jsn);
 }
 
 function getUrlArgs(url) {
