@@ -2,9 +2,9 @@ var cnv, sentenceInput, RulesInput, submit, lenInput, lAngleInput, rAngleInput, 
 
 var sentence, rules = [], len, lAngle, rAngle, reps = 0; //меняются через GUI и url
 
-var actions = [];
+var actions = [], prev_wiki="L-система";
 
-var url = "https://en.wikipedia.org/w/api.php?action=query&titles=Main%20Page&prop=revisions&rvprop=content&format=json"
+var searchUrl = 'https://ru.wikipedia.org/w/api.php?action=opensearch&format=json&search=';
 
 function setup() { //запускается один раз при зашрузке страницы
 
@@ -38,7 +38,7 @@ function setup() { //запускается один раз при зашруз�
 
   var examples = selectAll(".examples__tags");
   for(var i=0; i<examples.length; ++i){
-    examples[i].mousePressed(function examplePressed(){initValues(this.elt.dataset.url)});
+    examples[i].mousePressed(function examplePressed(){initValues(this.elt.dataset.url); goWiki(this.elt.innerHTML)});
   }
 
   actions['A'] = function Branch(hits){ line(0, 0, 0, hits*len); translate(0, hits*len);};
@@ -49,8 +49,7 @@ function setup() { //запускается один раз при зашруз�
   actions[']'] = function loadProps(hits) { for(var i=0; i<hits; ++i){pop();}};
   initValues(window.location.href);
   
-  var jsn = loadJSON(url, undefined, "json", function callback(jsn){console.log(jsn);}, function errorCallback(response){console.log(response)});
-	console.log(jsn);
+  goWiki(prev_wiki);
 }
 
 function getUrlArgs(url) {
@@ -253,4 +252,24 @@ function printSentence() {
     actions[prevChar](hits);
   }
   resetMatrix();
+}
+
+function goWiki(term) {
+	if(term!=prev_wiki){
+		prev_wiki = term;
+   var url = searchUrl + term;
+   loadJSON(url, gotSearch, 'jsonp');
+	}
+}
+  
+function gotSearch(data) {
+  console.log(data);
+  var def = data[2][0];
+  if(def==""||def==undefined){
+	  def="Информация не найдена.";
+  }
+  def = "Информация с википедии:<br>"+def;
+  select("#wiki_info").html(def);
+  
+  console.log(def);
 }
