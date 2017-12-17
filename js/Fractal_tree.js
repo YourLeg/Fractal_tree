@@ -48,8 +48,8 @@ function setup() { //запускается один раз при зашруз�
   actions['['] = function saveProps(hits) { for(var i=0; i<hits; ++i){push();}};
   actions[']'] = function loadProps(hits) { for(var i=0; i<hits; ++i){pop();}};
   initValues(window.location.href);
-  
-  goWiki(prev_wiki);
+
+  goWiki(searchUrl + prev_wiki);
 }
 
 function getUrlArgs(url) {
@@ -255,21 +255,21 @@ function printSentence() {
 }
 
 function goWiki(term) {
-	if(term!=prev_wiki){
-		prev_wiki = term;
+  if(term!=prev_wiki){
+    prev_wiki = term;
    var url = searchUrl + term;
    loadJSON(url, gotSearch, 'jsonp');
-	}
+  }
 }
-  
+
 function gotSearch(data) {
   console.log(data);
   var def = data[2][0];
   if(def==""||def==undefined){
-	  def="Информация не найдена.";
+    def="Информация не найдена.";
   }
   def = "Информация с википедии:<br>"+def;
   select("#wiki_info").html(def);
-  
+
   console.log(def);
 }
