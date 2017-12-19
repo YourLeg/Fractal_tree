@@ -1,3 +1,5 @@
+<img src="https://github.com/YourLeg/Fractal_tree/blob/master/images/presentation.gif" alt="Кажется, картинка где-то заблудилась">
+<a href="https://yourleg.github.io/Fractal_tree/">Работающий проект</a>
 <h2>Состав команды:</h2>
 <ol>
 <li>Атмаджиди Константин -- РП, БА</li>
